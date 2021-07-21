@@ -22,15 +22,18 @@ def search(name):
     search_queue += graph_following_users[name]
     # This is how you keep track of which people you've searched before
     searched = set()
+    # Check if some user is a python developer
     checker = False
     while search_queue:
         github_user = search_queue.popleft()
         # Only search this person if you haven't already searched them
-        while github_user not in searched:
-            if is_python_developer(github_user):
+        nobreak = True
+        # Using a boolean in order to avoid infinite loops
+        while github_user not in searched and nobreak:
+            if is_python_developer(github_user) and nobreak:
                 print(github_user + " is a python developer!")
                 checker = True
-                break
+                nobreak = False
             else:
                 search_queue += graph_following_users[github_user]
                 # Marks this person as searched
@@ -41,3 +44,7 @@ def search(name):
 
 
 search("maximofdezriera")
+
+#Big notation and algorithmic complexity.
+#Breadth-first search takes O(number of people + number of edges)
+#It’s more commonly written as O(V+E) (V for number of vertices, E for number of edges).
